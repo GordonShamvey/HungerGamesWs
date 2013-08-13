@@ -21,11 +21,6 @@ public class HungerGame {
     private long currentM = 0;
     private long maxRounds = 10000;
 
-    private HungerGame() {
-        players = new HashMap<>();
-        participants = new ArrayList<HuntableProfile>();
-    }
-
     public static HungerGame getInstance() {
         return new HungerGame();
     }
@@ -36,6 +31,36 @@ public class HungerGame {
 
     public void setMaxRounds(long maxRounds) {
         this.maxRounds = maxRounds;
+    }
+
+    public String play() {
+        logger.clear();
+        initParticipiants();
+
+        logger.addToLog("Participants count: " + participants.size());
+        logger.addToLog("Max rounds: " + maxRounds);
+
+        while(participants.size() > 1 && currentRound < maxRounds)
+        {
+            playRound();
+
+            logger.addToLog("Round " + currentRound);
+            for(HuntableProfile player : participants)
+            {
+                logger.addToLog(player.getJarName() + ": " + player.getCurrentFood() + " food");
+            }
+
+            checkPlayers();
+        }
+
+        logger.addToLog("Game over after round " + currentRound);
+
+        return logger.getLog();
+    }
+
+    private HungerGame() {
+        players = new HashMap<>();
+        participants = new ArrayList<HuntableProfile>();
     }
 
     private void initParticipiants() {
@@ -96,30 +121,6 @@ public class HungerGame {
         }
     }
 
-    public String play() {
-        logger.clear();
-        initParticipiants();
-
-        logger.addToLog("Participants count: " + participants.size());
-        logger.addToLog("Max rounds: " + maxRounds);
-
-        while(participants.size() > 1 && currentRound < maxRounds)
-        {
-            playRound();
-
-            logger.addToLog("Round " + currentRound);
-            for(HuntableProfile player : participants)
-            {
-                logger.addToLog(player.getJarName() + ": " + player.getCurrentFood() + " food");
-            }
-
-            checkPlayers();
-        }
-
-        logger.addToLog("Game over after round " + currentRound);
-
-        return logger.getLog();
-    }
     private int updatePlayerProfile(List<List<Moves>> playersDecisions) {
         int hunts_num = 0;
         for (int i = 0; i < participants.size(); i++) {
