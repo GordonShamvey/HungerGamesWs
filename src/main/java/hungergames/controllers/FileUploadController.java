@@ -30,14 +30,16 @@ public class FileUploadController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView save(@ModelAttribute("uploadForm") FileUploadForm uploadForm, Model map) {
+    public String save(@ModelAttribute("uploadForm") FileUploadForm uploadForm, Model map) {
 
         if(!uploadForm.CheckFiles()) {
-            return new ModelAndView("file_upload", "resultMessage", uploadForm.getErrorMsg());
+            map.addAttribute("resultMessage", uploadForm.getErrorMsg());
+            return "file_upload";
         }
 
         if(!uploadForm.saveFilesToDisk("D:\\HungerGamesBots")) {
-            return new ModelAndView("file_upload", "resultMessage", uploadForm.getErrorMsg());
+            map.addAttribute("resultMessage", uploadForm.getErrorMsg());
+            return "file_upload";
         }
 
         List<MultipartFile> files = uploadForm.getFiles();
@@ -49,15 +51,13 @@ public class FileUploadController {
 
                 String fileName = multipartFile.getOriginalFilename();
                 fileNames.add(fileName);
-                //Handle file content - multipartFile.get
-                // InputStream()
-
             }
         }
 
         map.addAttribute("resultMessage", "File was successfuly uploaded" + uploadForm.getErrorMsg());
         map.addAttribute("files", fileNames);
-        return new ModelAndView("file_upload", (Map<String, ?>) map);
+
+        return "file_upload";
 
     }
 }
