@@ -1,4 +1,4 @@
-package hungergames.modelattributes;
+package algoritmmicgames.modelattributes;
 
 import java.io.*;
 import java.util.List;
@@ -15,16 +15,16 @@ public class FileUploadForm {
     }
 
     public List<MultipartFile> getFiles() {
-        return files;  //To change body of created methods use File | Settings | File Templates.
+        return files;
     }
 
     public String getErrorMsg() {
-        return errorMsg;  //To change body of created methods use File | Settings | File Templates.
+        return errorMsg;
     }
 
     public boolean CheckFiles() {
 
-        return true;  //To change body of created methods use File | Settings | File Templates.
+        return true;
     }
 
     public boolean saveFilesToDisk(String path) {
@@ -72,16 +72,14 @@ public class FileUploadForm {
 
             } catch (FileNotFoundException e) {
                 errorMsg += e.getMessage();
-                res = false;  //To change body of catch statement use File | Settings | File Templates.
+                res = false;
             } catch (IOException e) {
                 errorMsg += e.getMessage();
                 res = false;
-                  //To change body of catch statement use File | Settings | File Templates.
+
             }
         }
 
         return res;
     }
-
-    //Getter and setter methods
 }

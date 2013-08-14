@@ -1,6 +1,7 @@
 package hungergames.services;
 
-import hungergames.api.Huntable;
+import algoritmmicgames.abstraction.GamePlayers;
+import algoritmmicgames.services.hungergames.HungerGamePlayers;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -8,13 +9,6 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alf
- * Date: 11.08.13
- * Time: 18:55
- * To change this template use File | Settings | File Templates.
- */
 public class GamePlayersTest {
     @Test
     public void testSetPlayersClasses() throws Exception {
@@ -34,13 +28,13 @@ public class GamePlayersTest {
     @Test
     public void testGetPlayersInfoMap() throws Exception {
         HashMap<String, Integer> playersInfo = new HashMap<String, Integer>();
-        playersInfo.put("Slacker", 1);
+        playersInfo.put("Slacker", 2);
         playersInfo.put("SmartPlayer", 1);
 
-        GamePlayers players = new GamePlayers();
+        GamePlayers players = new HungerGamePlayers();
         players.loadPlayersJars("D:\\HungerGamesBots");
-        Map<String, Huntable> res = players.getPlayersToPlay(playersInfo);
-        assertEquals("Size should be 2", 2, res.size());
+        Map<String, Object> res = players.getPlayersToPlay(playersInfo);
+        assertEquals("Size should be 3", 3, res.size());
     }
 
     @Test

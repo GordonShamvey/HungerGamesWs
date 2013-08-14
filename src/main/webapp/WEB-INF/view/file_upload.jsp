@@ -13,6 +13,7 @@
     <table id="fileTable">
         <tr>
             <td><input name="files[0]" type="file" /></td>
+            <td><form:errors path="files[0]" cssClass="error"></form:errors></td>
         </tr>
     </table>
     <br/><input type="submit" value="Upload" />

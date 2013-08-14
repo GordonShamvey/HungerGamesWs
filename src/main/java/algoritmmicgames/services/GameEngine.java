@@ -1,28 +1,20 @@
-package hungergames.services;
+package algoritmmicgames.services;
+
+import algoritmmicgames.abstraction.Game;
+import algoritmmicgames.abstraction.GameFactory;
+import algoritmmicgames.abstraction.GamePlayers;
 
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: CSD
- * Date: 07.08.13
- * Time: 15:52
- * To change this template use File | Settings | File Templates.
- */
-public class HungerGameEngine {
+public class GameEngine {
 
-    private String log = "";
-    private String playersFolder = "";
-    private GameProperties gameProps;
-    private GamePlayers gamePlayers;
-    private HungerGame game;
-
-    public HungerGameEngine() {
+    private GameEngine(GameFactory gameFactory) {
+        this.gameFactory = gameFactory;
         log = "";
-        gameProps = new GameProperties();
-        gamePlayers = new GamePlayers();
-        game = HungerGame.getInstance();
+        gameProps = gameFactory.createGameProperties();
+        gamePlayers = gameFactory.createGamePlayers();
+        game = gameFactory.createGame();
     }
 
     public String getPlayersFolder() {
@@ -37,18 +29,16 @@ public class HungerGameEngine {
         return gamePlayers;
     }
 
-    public void setGame(HungerGame game) {
+    public void setGame(Game game) {
         this.game = game;
     }
 
-    public void setGameProps(GameProperties gameProps) {
-        this.gameProps = gameProps;
-        game.setMaxRounds(gameProps.getMaxRounds());
+    public void setMaxRounds(long maxRounds) {
+        gameProps.setMaxRounds(maxRounds);
+        game.setMaxRounds(maxRounds);
     }
 
     public String playGame() {
-//        log += "Max rounds: " + gameProps.getMaxRounds() + "\n";
-//        log += "Players count: " + gameProps.getPlayersCount() + "\n";
 
         return game.play();
     }
@@ -58,12 +48,17 @@ public class HungerGameEngine {
         return log;
     }
 
-    public static HungerGameEngine getInstance() {
-        return new HungerGameEngine();
+    public static GameEngine getInstance(GameFactory gameFactory) {
+
+        return new GameEngine(gameFactory);
     }
 
     public List<String> getPlayersNames() {
         return gamePlayers.getAvailablePlayersList();
+    }
+
+    public GameProperties getGameProperties() {
+        return gameProps;
     }
 
     public void setPlayersToPlay(Map<String, Integer> playersCounts) {
@@ -82,4 +77,13 @@ public class HungerGameEngine {
 
         return gamePlayers.getPlayersInfoMap();
     }
+
+    private String log = "";
+    private String playersFolder = "";
+
+    private Game game;
+    private GamePlayers gamePlayers;
+    private GameProperties gameProps;
+    private GameFactory gameFactory;
+
 }

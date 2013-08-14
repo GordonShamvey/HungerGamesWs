@@ -1,9 +1,12 @@
-package hungergames.controllers;
+package algoritmmicgames.controllers;
 
-import hungergames.services.HungerGameEngine;
-import hungergames.modelattributes.GameInfoWrapper;
-import hungergames.validators.GamePropertiesValidator;
+import algoritmmicgames.services.GameEngine;
+import algoritmmicgames.abstraction.GameFactory;
+import algoritmmicgames.validators.GamePropertiesValidator;
+import algoritmmicgames.modelattributes.GameInfoWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,33 +17,35 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
 
-/**
- * Created with IntelliJ IDEA.
- * User: CSD
- * Date: 07.08.13
- * Time: 15:39
- * To change this template use File | Settings | File Templates.
- */
 @Controller
 public class GameController {
 
     @Autowired
-    HungerGameEngine gameEngine;
+    GameFactory gameFactory;
 
-    public void setGameEngine(HungerGameEngine engine) {
-        gameEngine = engine;
+    GameEngine gameEngine;
+
+    public void setGameEngine() {
+
+        ApplicationContext context= new ClassPathXmlApplicationContext("beans.xml");
+        gameFactory = (GameFactory) context.getBean("gameFactory");
+
+        gameEngine = GameEngine.getInstance(gameFactory);
     }
 
-    public HungerGameEngine getGameEngine() {
+    public GameEngine getGameEngine() {
         return gameEngine;
     }
 
     @RequestMapping(value = "/main_page", method = RequestMethod.GET)
     public ModelAndView displayForm() {
 
-        gameEngine.setPlayersFolder("D:\\HungerGamesBots");
+        setGameEngine();
+
+        gameEngine.setPlayersFolder(System.getProperty("user.dir") + "\\webapp\\HungerGamesWebService\\HungerGamesBots");
 
         GameInfoWrapper gameInfoWrapper = new GameInfoWrapper();
+        gameInfoWrapper.setGameProps(gameEngine.getGameProperties());
         gameInfoWrapper.setPlayersInfoMap(gameEngine.getPlayersInfoMap());
 
         ModelAndView mv = new ModelAndView("main_page");
@@ -61,7 +66,7 @@ public class GameController {
 
         //ModelAndView mvOut = new ModelAndView("main_page");
 
-        gameEngine.setGameProps(gameInfoWrapper.getGameProps());
+        gameEngine.setMaxRounds(gameInfoWrapper.getMaxRounds());
         gameEngine.setPlayersToPlay(gameInfoWrapper.getPlayersInfoMap());
 
         String log = gameEngine.playGame();

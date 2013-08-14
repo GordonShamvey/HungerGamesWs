@@ -1,4 +1,4 @@
-package hungergames.services;
+package algoritmmicgames.services.hungergames;
 
 import hungergames.api.Huntable;
 import hungergames.api.Moves;
@@ -7,14 +7,6 @@ import java.util.List;
 
 public class HuntableProfile {
 
-	String jarName;
-	Huntable player;
-	long currentFood;
-	int reputation;
-	
-	double h = 0;
-    double s = 0;
-	
 	public HuntableProfile()
 	{
 		
@@ -60,7 +52,7 @@ public class HuntableProfile {
 		this.currentFood = currentFood;
 	}
 
-    public void update_food(int food) {
+    public void updateFood(int food) {
         this.currentFood += food;
     }
 
@@ -74,7 +66,7 @@ public class HuntableProfile {
 		this.reputation = reputation;
 	}
 
-    public void update_reputation(Moves move)
+    public void updateReputation(Moves move)
     {
         if(move == Moves.Hunt) h++;
         else s++;
@@ -89,5 +81,13 @@ public class HuntableProfile {
 		}
 		
 	}
+
+    private String jarName;
+    private Huntable player;
+    private long currentFood;
+    private int reputation;
+
+    private double h = 0;
+    private double s = 0;
 
 }

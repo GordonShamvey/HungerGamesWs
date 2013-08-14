@@ -1,17 +1,9 @@
-package hungergames.controllers;
+package algoritmmicgames.controllers;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alf
- * Date: 03.08.13
- * Time: 18:23
- * To change this template use File | Settings | File Templates.
- */
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import hungergames.modelattributes.FileUploadForm;
+import algoritmmicgames.modelattributes.FileUploadForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -37,7 +29,7 @@ public class FileUploadController {
             return "file_upload";
         }
 
-        if(!uploadForm.saveFilesToDisk("D:\\HungerGamesBots")) {
+        if(!uploadForm.saveFilesToDisk(System.getProperty("user.dir") + "\\webapp\\HungerGamesWebService\\HungerGamesBots")) {
             map.addAttribute("resultMessage", uploadForm.getErrorMsg());
             return "file_upload";
         }

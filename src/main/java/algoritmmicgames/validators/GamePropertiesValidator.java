@@ -1,16 +1,9 @@
-package hungergames.validators;
+package algoritmmicgames.validators;
 
-import hungergames.modelattributes.GameInfoWrapper;
+import algoritmmicgames.modelattributes.GameInfoWrapper;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alf
- * Date: 12.08.13
- * Time: 22:52
- * To change this template use File | Settings | File Templates.
- */
 public class GamePropertiesValidator implements Validator {
 
     private final int MAX_ROUND_NUM_VALUE = 100000;

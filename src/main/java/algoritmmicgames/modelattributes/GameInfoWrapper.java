@@ -1,20 +1,19 @@
-package hungergames.modelattributes;
+package algoritmmicgames.modelattributes;
 
-import hungergames.services.GameProperties;
+import algoritmmicgames.services.GameProperties;
 
+import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alf
- * Date: 11.08.13
- * Time: 16:40
- * To change this template use File | Settings | File Templates.
- */
 public class GameInfoWrapper {
 
     public GameInfoWrapper() {
         gameProps = new GameProperties();
+        playersInfoMap = new HashMap<>();
+    }
+
+    public GameInfoWrapper(GameProperties gameProps) {
+        this.gameProps = gameProps;
     }
     public GameProperties getGameProps() {
         return gameProps;
@@ -38,14 +37,6 @@ public class GameInfoWrapper {
 
     public void setMaxRounds(long maxRounds) {
         gameProps.setMaxRounds(maxRounds);
-    }
-
-    public long getPlayersCount() {
-        return gameProps.getPlayersCount();
-    }
-
-    public void setPlayersCount(long playersCount) {
-        gameProps.setPlayersCount(playersCount);
     }
 
     private GameProperties gameProps;

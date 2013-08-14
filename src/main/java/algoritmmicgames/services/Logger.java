@@ -1,12 +1,10 @@
-package hungergames.services;
+package algoritmmicgames.services;
 
-/**
- * Created with IntelliJ IDEA.
- * User: CSD
- * Date: 22.07.13
- * Time: 10:32
- * To change this template use File | Settings | File Templates.
- */
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+
 public class Logger {
 
     String log;
@@ -28,5 +26,9 @@ public class Logger {
 
     public void clear() {
         this.log = "";
+    }
+
+    public void saveLog(String path) throws IOException {
+        FileUtils.writeStringToFile(new File(path + "\\log.txt"), log);
     }
 }

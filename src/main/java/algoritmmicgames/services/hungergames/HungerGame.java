@@ -1,31 +1,19 @@
-package hungergames.services;
+package algoritmmicgames.services.hungergames;
 
+import algoritmmicgames.abstraction.Game;
+import algoritmmicgames.services.Logger;
 import hungergames.api.Huntable;
 import hungergames.api.Moves;
 
 import java.util.*;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Alf
- * Date: 10.08.13
- * Time: 12:09
- * To change this template use File | Settings | File Templates.
- */
-public class HungerGame {
-
-    private Map<String, Huntable> players;
-    private List<HuntableProfile> participants = null;
-    private Logger logger = new Logger();
-    private long currentRound = 0;
-    private long currentM = 0;
-    private long maxRounds = 10000;
+public class HungerGame implements Game {
 
     public static HungerGame getInstance() {
         return new HungerGame();
     }
 
-    public void setPlayers(Map<String, Huntable> players) {
+    public void setPlayers(Map<String, Object> players) {
         this.players = players;
     }
 
@@ -60,15 +48,15 @@ public class HungerGame {
 
     private HungerGame() {
         players = new HashMap<>();
-        participants = new ArrayList<HuntableProfile>();
+        participants = new ArrayList<>();
     }
 
     private void initParticipiants() {
-        participants = new ArrayList<HuntableProfile>();
+        participants = new ArrayList<>();
         currentRound = 0;
 
         for(String playName : players.keySet()) {
-            participants.add(new HuntableProfile(playName, players.get(playName)));
+            participants.add(new HuntableProfile(playName, (Huntable)players.get(playName)));
         }
 
         for(HuntableProfile player : participants)
@@ -88,7 +76,7 @@ public class HungerGame {
         //Shuffle participants
         Collections.shuffle(participants);
 
-        List<List<Moves>> players_decisions = new ArrayList<List<Moves>>();
+        List<List<Moves>> players_decisions = new ArrayList<>();
 
         //Each player makes his decision
 
@@ -104,7 +92,7 @@ public class HungerGame {
 
         //Check extra food
         if(hunts_count >= currentM) for (HuntableProfile hp : participants) {
-            hp.update_food(2 * (participants.size() - 1));
+            hp.updateFood(2 * (participants.size() - 1));
         }
 
     }
@@ -121,6 +109,7 @@ public class HungerGame {
         }
     }
 
+    // I dont know how to implement it other way, due to rules and interface
     private int updatePlayerProfile(List<List<Moves>> playersDecisions) {
         int hunts_num = 0;
         for (int i = 0; i < participants.size(); i++) {
@@ -131,29 +120,29 @@ public class HungerGame {
             for (int j = 0; j < i; j++)
             {
                 List<Moves> opp_moves = playersDecisions.get(j);
-                participants.get(i).update_reputation(player_moves.get(k));
+                participants.get(i).updateReputation(player_moves.get(k));
 
                 if(player_moves.get(k) == Moves.Hunt)
                 {
                     hunts_num++;
                     if(opp_moves.get(i - 1) == Moves.Hunt)
                     {
-                        participants.get(i).update_food(0);
+                        participants.get(i).updateFood(0);
                     }
                     else
                     {
-                        participants.get(i).update_food(-3);
+                        participants.get(i).updateFood(-3);
                     }
                 }
                 else
                 {
                     if(opp_moves.get(i - 1) == Moves.Hunt)
                     {
-                        participants.get(i).update_food(1);
+                        participants.get(i).updateFood(1);
                     }
                     else
                     {
-                        participants.get(i).update_food(-2);
+                        participants.get(i).updateFood(-2);
                     }
                 }
                 k++;
@@ -161,29 +150,29 @@ public class HungerGame {
             for (int j = i + 1; j < participants.size(); j++)
             {
                 List<Moves> opp_moves = playersDecisions.get(j);
-                participants.get(i).update_reputation(player_moves.get(k));
+                participants.get(i).updateReputation(player_moves.get(k));
 
                 if(player_moves.get(k) == Moves.Hunt)
                 {
                     hunts_num++;
                     if(opp_moves.get(i) == Moves.Hunt)
                     {
-                        participants.get(i).update_food(0);
+                        participants.get(i).updateFood(0);
                     }
                     else
                     {
-                        participants.get(i).update_food(-3);
+                        participants.get(i).updateFood(-3);
                     }
                 }
                 else
                 {
                     if(opp_moves.get(i) == Moves.Hunt)
                     {
-                        participants.get(i).update_food(1);
+                        participants.get(i).updateFood(1);
                     }
                     else
                     {
-                        participants.get(i).update_food(-2);
+                        participants.get(i).updateFood(-2);
                     }
                 }
                 k++;
@@ -211,5 +200,12 @@ public class HungerGame {
         game.play();
         System.out.println("Game has finished after round " + game.currentRound);
     }
+
+    private Map<String, Object> players;
+    private List<HuntableProfile> participants = null;
+    private Logger logger = new Logger();
+    private long currentRound = 0;
+    private long currentM = 0;
+    private long maxRounds = 10000;
 
 }
